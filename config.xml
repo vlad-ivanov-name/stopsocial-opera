@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget xmlns="http://www.w3.org/ns/widgets" defaultlocale="en" version="1.43" id="https://addons.opera.com/extensions/details/stopsocial/">
+<widget xmlns="http://www.w3.org/ns/widgets" defaultlocale="en" version="2.0" id="https://addons.opera.com/extensions/details/stopsocial/">
   <name xml:lang="en">StopSocial</name>
   <name xml:lang="ru">StopSocial</name>
   <author href="http://resetnow.habrahabr.ru" email="vlad-mbx@yandex.ru">resetnow</author>
@@ -9,15 +9,13 @@
   <preference name="show-icon" value="1" readonly="false"/>
   <preference name="enable-update" value="1" readonly="false"/>
   <preference name="blocklist" value="[]" readonly="false"/>
-  <preference name="whitelist" value="[]" readonly="false"/>
+  <preference name="blocklist-disabled" value="{}" readonly="false"/>
+  <preference name="whitelist" value="{}" readonly="false"/>
   <preference name="list-version" value="-1" readonly="false"/>
-  <preference name="update-url" value="http://resetnow.ru/stopsocial/update" readonly="false"/>
-  <preference name="sign-url" value="http://resetnow.ru/stopsocial/signature" readonly="false"/>
   <preference name="mode-global" value="2" readonly="false"/>
   <access origin="https://resetnow.ru"/>
   <access origin="http://resetnow.ru"/>
   <license href="https://addons.opera.com/developer/license/hosting/">Copyright 2012 resetnow. All rights reserved.</license>
-  <update-description href="https://extension-updates.opera.com/api/w3c-wd1/update/8e65e118-2371-42d6-bd0d-2977ca21cafb/"/>
   <description xml:lang="en">Blocks all the social content, such as „share“ and „like“ buttons.</description>
   <description xml:lang="ru">Блокирует различный социальный контент: кнопки «Like» и «Share», виджеты и т. д.</description>
 </widget>

@@ -32,7 +32,7 @@ function parseRules() {
 	var blocklistDisabled = JSON.parse(widget.preferences["blocklist-disabled"]);
 	for (var i = 0, c = blocklist.length; i < c; i++) {
 		if (!blocklistDisabled.hasOwnProperty(i))
-			rules.push(blocklist[i].p);
+			rules = rules.concat(blocklist[i].p);
 	}
 }
 
@@ -109,11 +109,11 @@ errorReport.send = function(data) {
 }
 
 function main() {
-	if (!(widget.preferences.check(['list-version', 'update-url', 'blocklist-disabled']))) {
-		widget.preferences.set([['css-filter', ''], ['show-icon', '1'], ['enable-update', '1'], ['blocklist', '[]'], ['blocklist-disabled', '{}'], ['whitelist', '{}'], ['list-version', '-1'], ['update-url', 'http://resetnow.ru/stopsocial/update'], ['sign-url', 'http://resetnow.ru/stopsocial/signature'], ['mode-global', '2']]);
+	if (!(widget.preferences.check(['list-version', 'blocklist-disabled']))) {
+		widget.preferences.set([['css-filter', ''], ['show-icon', '1'], ['enable-update', '1'], ['blocklist', '[]'], ['blocklist-disabled', '{}'], ['whitelist', '{}'], ['list-version', '-1'], ['mode-global', '2']]);
 	}
-	updater.updateURL = "http://resetnow.ru/stopsocial/update?v=" + widget.preferences['list-version'] + '&w=' + widget.version;
-	updater.signatureURL = "http://resetnow.ru/stopsocial/signature?w=" + widget.version";
+	updater.updateURL = "http://resetnow.ru/stopsocial/update2?v=" + widget.preferences['list-version'] + '&w=' + widget.version;
+	updater.signatureURL = "http://resetnow.ru/stopsocial/signature2";
 	try {
 		parseRules();
 		parseWhitelist();

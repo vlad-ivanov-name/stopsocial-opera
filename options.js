@@ -9,7 +9,7 @@ function gea(s) {
 }
 
 function saveBlocklist() {
-	setRules(false);
+	bg.setRules(false);
 	var t = {};
 	ge("#blocklist-saved").style.opacity = 1;
 	setTimeout(function() {
@@ -21,8 +21,8 @@ function saveBlocklist() {
 		t[index] = true;
 	}
 	widget.preferences['blocklist-disabled'] = JSON.stringify(t);
-	parseRules();
-	setRules(true);
+	bg.parseRules();
+	bg.setRules(true);
 }
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -120,7 +120,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	 
 	for (var b = 0, c = blocklist.length - 1; b <= c; b++) {
 		var id = "blocklist-item-" + b;
-		var name = (blocklist[b].i == -1) ? _l["Other"] : blocklistNames[blocklist[b].i];
+		var name = (blocklist[b].n == '') ? _l["Other"] : blocklist[b].n;
 		var state = blocklistDisabled.hasOwnProperty(b);
 		state = (state) ? '' : ' checked';
 		e.innerHTML += '<div class="list-item"><input type="checkbox" data-index="' + b + '" id="' + id + '"' + state + '/><label for="' + id + '">' + name + '</label></div>';

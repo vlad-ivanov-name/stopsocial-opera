@@ -1,19 +1,21 @@
 var updater = {};
+var test;
 
 updater.printLog = function(s) {
 	opera.postError("StopSocial: " + s);
 }
 
+
 updater.applyUpdate = function(o) {
-	var whitelist = o.siteWhitelist.toObject;
+	var _whitelist = o.siteWhitelist.toObject();
 	var userWhitelist = JSON.parse(widget.preferences['whitelist']);
 	for (var attrname in userWhitelist) {
-		whitelist[attrname] = userWhitelist[attrname];
-	}	
-	widget.preferences['whitelist'] = JSON.stringify(whitelist);
+		_whitelist[attrname] = userWhitelist[attrname];
+	}
+	widget.preferences['whitelist'] = JSON.stringify(_whitelist);
 	widget.preferences['list-version'] = o.version;
 	widget.preferences['css-filter'] = o.cssFilter.replace(/(style|script)/gi, "");
-	widget.preferences['blocklist'] = JSON.stringify(blocklist);
+	widget.preferences['blocklist'] = JSON.stringify(o.blocklist);
 	widget.preferences['blocklist-names'] = JSON.stringify(o.widgetNames);
 	widget.preferences['enable-error-reporting'] = o.enableErrorReporting;
 	parseWhitelist();
