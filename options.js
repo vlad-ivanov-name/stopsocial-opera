@@ -115,25 +115,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
 	var 
 		blocklist = JSON.parse(widget.preferences["blocklist"]),
-		blocklistNames = JSON.parse(widget.preferences["blocklist-names"]),
-		blocklistProcessed = {},
 		blocklistDisabled = JSON.parse(widget.preferences["blocklist-disabled"]),
 		e = ge("#blocklist-editor");
 	 
-	//FIXME Localization for «other»
-
 	for (var b = 0, c = blocklist.length - 1; b <= c; b++) {
-		if (blocklistProcessed.hasOwnProperty(blocklist[b].i))
-			return;
-		blocklistProcessed[blocklist[b].i] = true;
 		var id = "blocklist-item-" + b;
-		var name = (blocklist[b].i == -1) ? "Other" : blocklistNames[blocklist[b].i];
-		var state = blocklistDisabled.hasOwnProperty(blocklist[b].i);
+		var name = (blocklist[b].i == -1) ? _l["Other"] : blocklistNames[blocklist[b].i];
+		var state = blocklistDisabled.hasOwnProperty(b);
 		state = (state) ? '' : ' checked';
-		e.innerHTML += '<div class="list-item"><input type="checkbox" data-index="' + blocklist[b].i + '" id="' + id + '"' + state + '/><label for="' + id + '">' + name + '</label></div>';
+		e.innerHTML += '<div class="list-item"><input type="checkbox" data-index="' + b + '" id="' + id + '"' + state + '/><label for="' + id + '">' + name + '</label></div>';
 	}
-
-	e = gea("div#blocklist-editor input[type='checkbox']");
 
 	ge('#blocklist-save').addEventListener('click', saveBlocklist);
 

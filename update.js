@@ -4,17 +4,16 @@ updater.printLog = function(s) {
 	opera.postError("StopSocial: " + s);
 }
 
-
 updater.applyUpdate = function(o) {
 	var whitelist = o.siteWhitelist.toObject;
 	var userWhitelist = JSON.parse(widget.preferences['whitelist']);
 	for (var attrname in userWhitelist) {
 		whitelist[attrname] = userWhitelist[attrname];
-	}
+	}	
 	widget.preferences['whitelist'] = JSON.stringify(whitelist);
 	widget.preferences['list-version'] = o.version;
 	widget.preferences['css-filter'] = o.cssFilter.replace(/(style|script)/gi, "");
-	widget.preferences['blocklist'] = JSON.stringify(o.blocklist);
+	widget.preferences['blocklist'] = JSON.stringify(blocklist);
 	widget.preferences['blocklist-names'] = JSON.stringify(o.widgetNames);
 	widget.preferences['enable-error-reporting'] = o.enableErrorReporting;
 	parseWhitelist();
@@ -23,10 +22,6 @@ updater.applyUpdate = function(o) {
 	setRules(true);
 	this.printLog("Update success. Version: " + o.version + ", " + o.blocklist.length + " rules");
 }
-
-
-
-
 
 updater.checkSignature = function(signature, serverResponse) {
 	var o;
@@ -47,15 +42,13 @@ updater.checkSignature = function(signature, serverResponse) {
 	var hash1 = decryptedString(this.keyPair, signature);
 	var hash2 = md5(serverResponse);
 
-	//FIXME Enable RSA signature check
-	/*
-	 if(hash1 != hash2) {
-	 this.printLog('RSA signature check failed! ' + hash1 + ' ' + hash2);
-	 return;
-	 }
-	 */
+	if (hash1 != hash2) {
+		this.printLog('RSA signature check failed! ' + hash1 + ' ' + hash2);
+		return;
+	}
 	this.applyUpdate(o);
 }
+
 
 
 updater.getSignature = function (serverResponse) {
