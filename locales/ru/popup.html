@@ -1,0 +1,36 @@
+<!DOCTYPE HTML>
+<html lang="en">
+	<head>
+		<title>StopSocial</title>
+		<meta charset="UTF-8" />
+		<link rel="stylesheet" href="popup.css" />
+		<script type="text/javascript" src="popup.js"></script>
+	</head>
+	<body>
+		<h2>StopSocial &mdash; Настройки</h2>
+		<div id="tab-container">
+			<a class="tab active" data-content="tab0" href="#">Общие</a><a class="tab" id="tab-site" data-content="tab1" href="#">Сайт</a>
+		</div>
+		<div class="tab-content" id="tab0">
+			<p>
+				<input id="mode-g-2" type="radio" name="mode-g" value="2" />
+				<label for="mode-g-2">Расширенная блокировка</label>
+			</p>
+			<p>
+				<input id="mode-g-1" type="radio" name="mode-g" value="1" />
+				<label for="mode-g-1">Базовая блокировка</label>
+			</p>
+			<p>
+				<input id="mode-g-0" type="radio" name="mode-g" value="0" />
+				<label for="mode-g-0">Отключено</label>
+			</p>
+		</div>
+		<div class="tab-content" id="tab1" style="display: none;">
+			<p>
+				<input id="mode-s" type="checkbox" name="mode-s" checked="checked" />
+				<label for="mode-s">Расширенная блокировка</label>
+				<span id="site-domain">Loading...</span>
+			</p>
+		</div>
+	</body>
+</html>
