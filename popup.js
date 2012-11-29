@@ -15,12 +15,11 @@ HTMLElement.prototype.show = function(s) {
 }
 
 Array.prototype.remove = function(v) {
-	for(var i = 0; i < this.length; i++) {
-		if(this[i] == v)
+	for (var i = 0; i < this.length; i++) {
+		if (this[i] == v)
 			this.splice(i, 1);
 	}
 }
-
 function ge(id) {
 	return document.querySelector(id);
 }
@@ -41,11 +40,11 @@ function classRemove(e, c) {
 
 function clearTabs() {
 	var o = gea("a.tab");
-	for(var i = 0, len = o.length; i < len; i++) {
+	for (var i = 0, len = o.length; i < len; i++) {
 		classRemove(o[i], 'active');
 	}
 	o = gea("div.tab-content");
-	for(var i = 0, len = o.length; i < len; i++) {
+	for (var i = 0, len = o.length; i < len; i++) {
 		o[i].hide();
 	}
 }
@@ -53,7 +52,7 @@ function clearTabs() {
 function getCurrentSite() {
 	var bg = opera.extension.bgProcess;
 	var t = bg.getFocusedTab();
-	if(t)
+	if (t)
 		return bg.getDomain(t.url);
 	else
 		return false
@@ -63,14 +62,14 @@ function saveSettings(s, v) {
 	switch (s) {
 		case S_GLOBAL:
 			widget.preferences['mode-global'] = v;
-			if(v < LVL_STRICT) {
+			if (v < LVL_STRICT) {
 				ge('#tab-site').hide();
 			} else {
 				ge('#tab-site').show();
 			}
 			break;
 		case S_SITE:
-			if(v) {
+			if (v) {
 				delete whitelist[currentSite];
 			} else {
 				whitelist[currentSite] = true;
@@ -83,9 +82,9 @@ function saveSettings(s, v) {
 
 function loadSettings() {
 	var o = ge("#mode-g-" + widget.preferences['mode-global']);
-	if(o)
+	if (o)
 		o.checked = true;
-	if((widget.preferences['mode-global'] < LVL_STRICT) || (currentSite == false)) {
+	if ((widget.preferences['mode-global'] < LVL_STRICT) || (currentSite == false)) {
 		ge('#tab-site').hide();
 		return;
 	}
@@ -97,7 +96,7 @@ window.addEventListener('DOMContentLoaded', function() {
 	loadSettings();
 	ge('#site-domain').innerHTML = (currentSite || "&mdash;");
 	var tabs = gea("a.tab");
-	for(var i = 0, len = tabs.length; i < len; i++) {
+	for (var i = 0, len = tabs.length; i < len; i++) {
 		tabs[i].addEventListener("click", function() {
 			clearTabs();
 			this.className += ' active';
@@ -107,11 +106,11 @@ window.addEventListener('DOMContentLoaded', function() {
 	}
 
 	var s = gea("input[name='mode-g']");
-	for(var i = 0, len = s.length; i < len; i++) {
+	for (var i = 0, len = s.length; i < len; i++) {
 		s[i].addEventListener("click", function() {
-			if((this.value == 0) && (widget.preferences['mode-global'] != 0)) {
+			if ((this.value == 0) && (widget.preferences['mode-global'] != 0)) {
 				bg.setRules(false);
-			} else if((this.value > 0) && (widget.preferences['mode-global'] == 0)) {
+			} else if ((this.value > 0) && (widget.preferences['mode-global'] == 0)) {
 				opera.postError(1);
 				bg.setRules(true);
 			}
@@ -122,4 +121,11 @@ window.addEventListener('DOMContentLoaded', function() {
 	ge("#mode-s").addEventListener("click", function() {
 		saveSettings(S_SITE, this.checked);
 	}, false);
+
+	if (!bg.capability.URLFILTER_V2) {
+		var unsupported = gea(".urlfilter-v2");
+		for (var i = 0, len = unsupported.length; i < len; i++) {
+			unsupported[i].hide();
+		}
+	}
 }, false);

@@ -1,4 +1,7 @@
-const LVL_STRICT = 2, LVL_BASE = 1, LVL_OFF = 0;
+const 
+	LVL_STRICT = 2, 
+	LVL_BASE = 1, 
+	LVL_OFF = 0;
 
 Storage.prototype.set = function(o) {
 	for (var i = 0, c = o.length; i < c; i++) {
@@ -36,9 +39,7 @@ function parseRules() {
 	}
 }
 
-var theButton;
-
-var rules, currentSite, whitelist = {};
+var theButton, rules, currentSite, whitelist = {};
 
 var filter = opera.extension.urlfilter;
 function getDomain(url) {
@@ -48,6 +49,14 @@ function getDomain(url) {
 	else
 		return false;
 }
+
+var capability = (function(v, n) {
+	var t = {}, version = parseFloat(opera.version());
+	for (var i = 0, l = v.length; i < l; i++) {
+		t[n[i]] = (v[i] <= version);
+	}
+	return t;
+})([11.60, 12.10], ["WINDOW_ONERROR", "URLFILTER_V2"]);
 
 function getFocusedTab() {
 	return opera.extension.tabs.getFocused();
@@ -96,22 +105,85 @@ function setupConnection() {
 	}
 }
 
-var errorReport = {};
-
-errorReport.handlerURL = "http://resetnow.ru/stopsocial/error";
-errorReport.send = function(data) {
-	var x = new XMLHttpRequest();
-	x.open('POST', this.handlerURL, true);
-	var postData = 'e=' + encodeURIComponent(JSON.stringify(data));
-	x.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-	x.setRequestHeader('Custom-request-source', 'StopSocial');
-	x.send(postData);
+var errorReport = {
+	handlerURL : "http://resetnow.ru/stopsocial/error",
+	send : function(data) {
+		var x = new XMLHttpRequest();
+		x.open('POST', this.handlerURL, true);
+		var postData = 'e=' + encodeURIComponent(JSON.stringify(data));
+		x.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+		x.setRequestHeader('Custom-request-source', 'StopSocial');
+		x.send(postData);
+	}
 }
 
-function main() {
-	if (!(widget.preferences.check(['list-version', 'blocklist-disabled']))) {
-		widget.preferences.set([['css-filter', ''], ['show-icon', '1'], ['enable-update', '1'], ['blocklist', '[]'], ['blocklist-disabled', '{}'], ['whitelist', '{}'], ['list-version', '-1'], ['mode-global', '2']]);
+var stopSocial = {
+	state : {
+		enableURLFilter : true,
+		enableCSSFilter : true
+	},
+	settings : widget.preferences,
+	start : function() {
+		this.initStorage();
+		this.readSettings();
+	},
+	update : function() {
+		updater.start();
+	},
+	readSettings : function() {
+		rules = [];
+		var blocklist = JSON.parse(this.settings["url-filter"]);
+		var blocklistDisabled = JSON.parse(this.settings["url-disabled"]);
+		for (var i = 0, c = blocklist.length; i < c; i++) {
+			if (!blocklistDisabled.hasOwnProperty(i))
+				rules = rules.concat(blocklist[i].p);
+		}
+		this.setState({
+			enableURLFilter : this.settings['enable-url-filter'],
+			enableCSSFilter : this.settings['enable-css-filter']
+		});
+	},
+	initStorage : function() {
+		(function(data){
+			for (a in data) {
+				if (this.settings[a[0]] == undefined) {
+					for (b in data)
+						this.settings[b[0]] = b[1];
+					return;
+				}
+			}
+		})([
+			['css-filter', ''],
+			['css-whitelist', ''],
+			['url-disabled', '{}'], 
+			['show-icon', '1'], 
+			['enable-update', '1'], 
+			['url-filter', '[]'], 
+			['url-whitelist', '{}'],
+			['url-disabled', '{}'],
+			['list-version', '-1'], 
+			['enable-url-filter', 1],
+			['enable-css-filter', 1]
+		]);
+		}
+	},
+	URLFilter : {
+		list : [],
+		exludeDomains : []
+	},
+	CSSFilter : {
+		code : "",
+		exludeDomains : []
+	},
+	setDomainState : function(domain, state) {
+
+	},
+	setState : function(state) {
+
 	}
+};
+
+function main() {
 	updater.updateURL = "http://resetnow.ru/stopsocial/update2?v=" + widget.preferences['list-version'] + '&w=' + widget.version;
 	updater.signatureURL = "http://resetnow.ru/stopsocial/signature2";
 	try {
@@ -150,7 +222,7 @@ window.addEventListener('DOMContentLoaded', function() {
 	var enableErrorReporting = false
 	if (widget.preferences['enable-error-reporting'] == "true")
 		enableErrorReporting = true;
-	if (v >= 11.60) {
+	if (capability.WINDOW_ONERROR) {
 		if (enableErrorReporting)
 			window.onerror = function(message, url, linenumber) {
 				errorReport.send({

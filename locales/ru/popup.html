@@ -12,23 +12,17 @@
 			<a class="tab active" data-content="tab0" href="#">Общие</a><a class="tab" id="tab-site" data-content="tab1" href="#">Сайт</a>
 		</div>
 		<div class="tab-content" id="tab0">
-			<p>
-				<input id="mode-g-2" type="radio" name="mode-g" value="2" />
-				<label for="mode-g-2">Расширенная блокировка</label>
-			</p>
-			<p>
-				<input id="mode-g-1" type="radio" name="mode-g" value="1" />
-				<label for="mode-g-1">Базовая блокировка</label>
-			</p>
-			<p>
-				<input id="mode-g-0" type="radio" name="mode-g" value="0" />
-				<label for="mode-g-0">Отключено</label>
-			</p>
+				<input id="mode-g-extended" type="checkbox" name="mode-g-extended" checked="checked" />
+				<label for="mode-g-extended">CSS фильтрация</label>
+				<input id="mode-g-base" type="checkbox" name="mode-g-base" checked="checked" />
+				<label for="mode-g-base">Блокировать по URL</label>
 		</div>
 		<div class="tab-content" id="tab1" style="display: none;">
 			<p>
-				<input id="mode-s" type="checkbox" name="mode-s" checked="checked" />
-				<label for="mode-s">Расширенная блокировка</label>
+				<input id="mode-s-extended" type="checkbox" name="mode-s-extended" checked="checked" />
+				<label for="mode-s-extended">CSS фильтрация</label>
+				<input class="urlfilter-v2" id="mode-s-base" type="checkbox" name="mode-s-base" checked="checked" />
+				<label class="urlfilter-v2" for="mode-s-base">Блокировать по URL</label>
 				<span id="site-domain">Loading...</span>
 			</p>
 		</div>
